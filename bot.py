@@ -50,6 +50,8 @@ CONTENT_TYPES = [
     "spotlight_en",    # Post avec lien VaultX
     "engagement_fr",   # Question / interaction
     "engagement_en",
+    "promo_1xbet_fr",  # Promo code 1XBET
+    "promo_1xbet_en",
 ]
 
 PROMPTS = {
@@ -124,6 +126,34 @@ Accepted formats:
 - Simple preference question ("Night or day? 🌙")
 - Statement followed by a short question
 - Style or mood poll
+
+Generate ONE single post. No surrounding explanation.
+""",
+    "promo_1xbet_fr": """
+Génère un post Telegram promotionnel en français (3-4 phrases max) pour 1XBET.
+Code promo : PSP86 — il donne accès à des bonus de bienvenue et promotions exclusives.
+
+Style : copywriting percutant, bénéfice immédiat, sentiment d'opportunité à ne pas manquer.
+Ton : confidentiel, entre amis, comme si tu partageais un bon plan.
+Termine EXACTEMENT par : "👉 Code promo : PSP86"
+2-3 emojis intégrés naturellement. Pas de hashtags.
+
+Varie les angles à chaque fois : bonus de bienvenue, paris sportifs, casino, jackpots, cashback, freebets.
+Exemple de style : "Les meilleurs matchs du week-end arrivent. Avec 1XBET et le code PSP86, ton premier dépôt est boosté dès maintenant. Ne rate pas ça. 🎯\n👉 Code promo : PSP86"
+
+Génère UN seul post. Pas d'explication autour.
+""",
+    "promo_1xbet_en": """
+Generate a promotional Telegram post in English (3-4 sentences max) for 1XBET.
+Promo code: PSP86 — unlocks welcome bonuses and exclusive promotions.
+
+Style: punchy copywriting, immediate benefit, sense of opportunity not to be missed.
+Tone: confidential, between friends, like sharing a good deal.
+End EXACTLY with: "👉 Promo code: PSP86"
+2-3 emojis integrated naturally. No hashtags.
+
+Vary the angle each time: welcome bonus, sports betting, casino, jackpots, cashback, freebets.
+Example style: "Big matches this weekend. With 1XBET and code PSP86, your first deposit gets a boost right now. Don't sleep on this. 🎯\n👉 Promo code: PSP86"
 
 Generate ONE single post. No surrounding explanation.
 """,
@@ -221,12 +251,14 @@ def pick_content_type() -> str:
     """Choisit le type de contenu selon une rotation équilibrée."""
     # 40% teasers, 40% spotlights (si VaultX activé), 20% engagement
     weights = {
-        "teaser_fr": 20,
-        "teaser_en": 20,
-        "spotlight_fr": 20 if INCLUDE_VAULTX_LINKS else 0,
-        "spotlight_en": 20 if INCLUDE_VAULTX_LINKS else 0,
+        "teaser_fr": 15,
+        "teaser_en": 15,
+        "spotlight_fr": 15 if INCLUDE_VAULTX_LINKS else 0,
+        "spotlight_en": 15 if INCLUDE_VAULTX_LINKS else 0,
         "engagement_fr": 10,
         "engagement_en": 10,
+        "promo_1xbet_fr": 10,
+        "promo_1xbet_en": 10,
     }
     types = [k for k, v in weights.items() if v > 0]
     w = [weights[k] for k in types]
